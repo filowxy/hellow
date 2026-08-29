@@ -1,0 +1,24 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "Apache-2.0"
+
+[[mods]]
+modId = "hellow"
+version = "2.0.0"
+displayName = "Hellow"
+authors = "filowxy"
+description = "Hellow 鈥?condition-driven window manager for NeoForge mods. Callers register 'when X, show Y' rules; Hellow owns the screen lifecycle."
+
+[[dependencies.hellow]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.233,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.hellow]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "CLIENT"

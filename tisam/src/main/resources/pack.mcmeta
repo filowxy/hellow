@@ -1,0 +1,13 @@
+{
+    "pack": {
+        "description": "TISAM resources",
+        "forge:resource_pack_format": {
+            "min": 34,
+            "max": 34
+        },
+        "forge:data_pack_format": {
+            "min": 45,
+            "max": 45
+        }
+    }
+}
