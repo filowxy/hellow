@@ -5,6 +5,7 @@ import com.hellow.page.HellowRegistry;
 import com.hellow.page.Page;
 import com.hellow.page.PageScheduler;
 import com.hellow.page.PageSpec;
+import com.hellow.pages.PageFileLoader;
 import com.hellow.trigger.FireStrategy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -20,6 +21,7 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 public final class HellowMod {
     public HellowMod() {
         HellowConstants.log().info("[hellow] declarative page framework initialized");
+        PageFileLoader.load();
     }
 
     @EventBusSubscriber(modid = HellowConstants.MOD_ID, value = Dist.CLIENT)
@@ -55,14 +57,20 @@ public final class HellowMod {
             return null;
         }
 
-        /** {@code /hellow debug} — open the error report screen. */
+        /** {@code /hellow debug} / {@code /hellow pages reload}. */
         @SubscribeEvent
         public static void onRegisterCommands(RegisterClientCommandsEvent event) {
             event.getDispatcher().register(Commands.literal("hellow")
                     .then(Commands.literal("debug").executes(ctx -> {
                         HellowDebug.openDebug();
                         return 1;
-                    })));
+                    }))
+                    .then(Commands.literal("pages")
+                            .then(Commands.literal("reload").executes(ctx -> {
+                                int n = PageFileLoader.load();
+                                HellowConstants.log().info("[hellow] pages reloaded: {}", n);
+                                return 1;
+                            }))));
         }
     }
 }
