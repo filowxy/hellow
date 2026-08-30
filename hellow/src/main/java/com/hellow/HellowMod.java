@@ -1,5 +1,6 @@
 package com.hellow;
 
+import com.hellow.debug.HellowDebug;
 import com.hellow.page.HellowRegistry;
 import com.hellow.page.Page;
 import com.hellow.page.PageScheduler;
@@ -7,10 +8,12 @@ import com.hellow.page.PageSpec;
 import com.hellow.trigger.FireStrategy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.commands.Commands;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
 @Mod(HellowConstants.MOD_ID)
@@ -50,6 +53,16 @@ public final class HellowMod {
                 }
             }
             return null;
+        }
+
+        /** {@code /hellow debug} — open the error report screen. */
+        @SubscribeEvent
+        public static void onRegisterCommands(RegisterClientCommandsEvent event) {
+            event.getDispatcher().register(Commands.literal("hellow")
+                    .then(Commands.literal("debug").executes(ctx -> {
+                        HellowDebug.openDebug();
+                        return 1;
+                    })));
         }
     }
 }

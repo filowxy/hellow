@@ -1,6 +1,7 @@
 package com.hellow.modal;
 
 import com.hellow.HellowConstants;
+import com.hellow.debug.HellowDebug;
 import com.hellow.element.Element;
 import com.hellow.element.RenderContext;
 import com.hellow.style.HellowTheme;
@@ -225,30 +226,42 @@ public class HellowModal extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        // Dim everything behind the dialog. We own the overlay, so renderBackground
-        // is a no-op (see below) and the dim is drawn here.
-        g.fill(0, 0, this.width, this.height, this.theme.dimOverlay());
+        try {
+            // Dim everything behind the dialog. We own the overlay, so renderBackground
+            // is a no-op (see below) and the dim is drawn here.
+            g.fill(0, 0, this.width, this.height, this.theme.dimOverlay());
 
-        int left = dialogLeft();
-        int top = dialogTop();
-        g.fill(left, top, left + this.dialogWidth, top + this.dialogHeight, this.theme.dialogBackground());
-        g.renderOutline(left, top, this.dialogWidth, this.dialogHeight, this.theme.dialogBorder());
+            int left = dialogLeft();
+            int top = dialogTop();
+            g.fill(left, top, left + this.dialogWidth, top + this.dialogHeight, this.theme.dialogBackground());
+            g.renderOutline(left, top, this.dialogWidth, this.dialogHeight, this.theme.dialogBorder());
 
-        // Title, vertically centered in the title strip.
-        int titleY = top + (this.titleArea - this.font.lineHeight) / 2;
-        g.drawString(this.font, this.title, left + PADDING, titleY, this.theme.titleColor(), true);
+            // Title, vertically centered in the title strip.
+            int titleY = top + (this.titleArea - this.font.lineHeight) / 2;
+            g.drawString(this.font, this.title, left + PADDING, titleY, this.theme.titleColor(), true);
 
-        // Clip the body to its region: body content (multi-line text, partially
-        // visible list rows, tooltips) must never bleed into the bottom button row.
-        if (bodyHeight() > 0) {
-            g.enableScissor(bodyLeft(), bodyTop(), bodyLeft() + bodyWidth(), bodyTop() + bodyHeight());
-            this.renderBody(g, mouseX, mouseY, partialTick);
-            g.disableScissor();
+            // Clip the body to its region: body content (multi-line text, partially
+            // visible list rows, tooltips) must never bleed into the bottom button row.
+            if (bodyHeight() > 0) {
+                g.enableScissor(bodyLeft(), bodyTop(), bodyLeft() + bodyWidth(), bodyTop() + bodyHeight());
+                this.renderBody(g, mouseX, mouseY, partialTick);
+                g.disableScissor();
+            }
+
+            renderElementButtons(g, mouseX, mouseY);
+
+            super.render(g, mouseX, mouseY, partialTick);
+        } catch (Throwable t) {
+            // A broken element tree must not hard-crash the screen. Record it for the
+            // debug report and draw a minimal fallback so the player can still leave.
+            HellowDebug.capture("render", t, this);
+            g.fill(0, 0, this.width, this.height, 0x66000000);
+            int left = dialogLeft();
+            int top = dialogTop();
+            g.fill(left, top, left + this.dialogWidth, top + this.dialogHeight, this.theme.dialogBackground());
+            g.drawString(this.font, "Hellow UI error — open " + HellowDebug.class.getSimpleName() + ".openDebug()",
+                    left + 8, top + 8, 0xFFFF5555, true);
         }
-
-        renderElementButtons(g, mouseX, mouseY);
-
-        super.render(g, mouseX, mouseY, partialTick);
     }
 
     // -------- Declarative (hellow element) bottom button row --------
@@ -307,8 +320,13 @@ public class HellowModal extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (dispatchElementButtons((int) mouseX, (int) mouseY, button)) return true;
-        return super.mouseClicked(mouseX, mouseY, button);
+        try {
+            if (dispatchElementButtons((int) mouseX, (int) mouseY, button)) return true;
+            return super.mouseClicked(mouseX, mouseY, button);
+        } catch (Throwable t) {
+            HellowDebug.capture("mouseClicked", t, this);
+            return false;
+        }
     }
 
     /** Forward a click to the declarative bottom-row buttons (same layout as render). */
@@ -345,12 +363,17 @@ public class HellowModal extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // ESC closes the dialog and returns to the parent screen.
-        if (keyCode == 256) {
-            this.onClose();
-            return true;
+        try {
+            // ESC closes the dialog and returns to the parent screen.
+            if (keyCode == 256) {
+                this.onClose();
+                return true;
+            }
+            return super.keyPressed(keyCode, scanCode, modifiers);
+        } catch (Throwable t) {
+            HellowDebug.capture("keyPressed", t, this);
+            return false;
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
