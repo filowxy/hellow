@@ -81,7 +81,7 @@ dependencies {
     // Gradle's jvm-test-suite plugin requires the launcher on the runtime
     // classpath, not just the test classpath. Without this you get a
     // "Failed to load JUnit Platform" error at test-execution time.
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.3")
     // SLF4J is provided by the Minecraft launcher at runtime but is
     // missing from the unit-test runtime classpath. The constants in
     // TisamConstants reference LoggerFactory, which fails
