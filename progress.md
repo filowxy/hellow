@@ -388,3 +388,20 @@ java.lang.NoSuchMethodException: Screen.addRenderableWidget(net.minecraft.client
 - `gradlew build` âœ… å…¨ç»¿ï¼ˆ14 tasksï¼‰ï¼›æœ€æ–° jar å·²åŒæ­¥ï¼ˆ8/29ï¼‰ã€‚
 - **vanilla æ®‹ç•™**ï¼šä»… `TisamClientEvents.TitleScreenButton`ï¼ˆvanilla TitleScreen ä¸Šçš„å…¥å£æŒ‰é’®ï¼Œåˆ»æ„ä¿ç•™ï¼‰ã€‚
 
+
+## »á»° 7(2026-08-29  Hellow ÉúÌ¬:debug/pages/ScreenEmbed)
+
+### »á»°ÈÎÎñ
+- È«Á¿´úÂëÉó²é(Á½¸ö subagent) ĞŞ¸´ 8 ´¦¸ß¼ÛÖµÎÊÌâ(CLAMPED ½Ø¶Ï¡¢¹ö¶¯±£Áô¡¢ÃâÔğÉùÃ÷¿É¹ö¶¯¡¢¹ö¶¯ÌõÃüÖĞ¡¢null type µÈ)+ ÌáĞÑË¥¼õ±í + modules.json Èİ´í·´ĞòÁĞ»¯(º¬µ¥²â)
+- ±êÌâ°´Å¥¸ÄÔ­°æ Button.builder ¸ñÊ½;»á»°ÄÚ Later Ö»¼ÆÒ»´Î;preview ²»ÔÙÎŞÏŞÖØµ¯
+- ×÷Õß filowxy ÒÑÂäÔÚ hellow/tisam/root ÔªÊı¾İ;´´½¨ hellow/README.md(¹¦ÄÜ+API Ë«ÓïÖÕ°æÓ¢ÎÄ)
+
+### µ±Ç°»á»°ĞÂĞèÇó(ÓÃ»§):ÍÆËÍ + debug + ÎÄ¼şÒ³Ãæ + everyconfig
+- **P0**:4 ¸ö±¾µØ commit(91c64fa/7f41c28/5d1ae70/7ba0fae)´ò°ü;Ô¶¶Ë²Ö¿â filowxy/hellow ²»´æÔÚ & ÎŞ GitHub token/gh  **´ıÓÃ»§½¨²Öºó push**
+- **P1 Íê³É**:com.hellow.debug(ErrorCollector/DebugEntry/HellowDebug/DebugScreen/ÃüÁî)+ HellowModal render|mouse|key ±ß½ç²¶»ñ;7 µ¥²âÍ¨¹ı
+- **P2 Íê³É**:config/hellow/pages/*.json ÎÄ¼şÒ³Ãæ(ÔªËØÊ÷=Elements ¹¤³§,onPress ¶¯×÷¼¯,trigger Ö§³Ö screen/event + once/everyTime;/hellow pages reload;»µÎÄ¼ş½ø debug ±¨¸æ);ÔËĞĞÑùÀı hellow_demo.json
+- **P3 ²¿·Ö**:ScreenEmbedElement(ÈÎÒâ Screen ¾ØĞÎÇ¶Èë hellow,scissor+ÊÂ¼ş×ª·¢)Íê³É;everyconfig ×ÓÏîÄ¿Óë¸÷ÅäÖÃ¿â adapter ´ı×ö(Äâ subagent µ÷ÑĞ cloth-config/YACL/Configured/FzzyConfig/ResourcefulConfig)
+
+### ²âÊÔ/Ìá½»
+- :hellow:test Í¨¹ı(37 tests);Öğ½×¶Î git commit(4 ¸öĞÂÔö)
+
