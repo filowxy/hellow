@@ -143,6 +143,42 @@ public final class Hellow {
     /** Event types we already hooked on the NeoForge game bus (one listener per type). */
     private static final Set<Class<?>> HOOKED_EVENT_TYPES = new CopyOnWriteArraySet<>();
 
+    // -------- Deferred screen opening --------
+    //
+    // Showing a page by calling Minecraft.setScreen() *inside* ScreenEvent.Opening
+    // is unsafe: Opening fires while the outer setScreen() (the one that triggered
+    // it) is still in progress, so the inner setScreen() is overwritten when the
+    // outer one completes — the page's Opening fires (visible in logs) but the page
+    // never reaches the screen. Queue the screen and apply it on the next client
+    // tick instead (same approach TISAM uses for its first prompt).
+
+    /** Screen queued to open on the next client tick (drained by {@link #drainPendingScreen()}). */
+    private static final java.util.concurrent.atomic.AtomicReference<Screen> PENDING_SCREEN =
+            new java.util.concurrent.atomic.AtomicReference<>();
+
+    /** Hooked once on the game bus to drain {@link #PENDING_SCREEN}. */
+    private static volatile boolean TICK_DRAIN_HOOKED = false;
+
+    private static void ensureTickDrainHooked() {
+        if (TICK_DRAIN_HOOKED) return;
+        TICK_DRAIN_HOOKED = true;
+        NeoForge.EVENT_BUS.addListener(ClientTickEvent.Post.class, e -> drainPendingScreen());
+    }
+
+    private static void drainPendingScreen() {
+        Screen pending = PENDING_SCREEN.getAndSet(null);
+        if (pending != null) {
+            Minecraft.getInstance().setScreen(pending);
+        }
+    }
+
+    /** Queue {@code screen} to open on the next client tick (deferred, see above). */
+    private static void queueScreen(Screen screen) {
+        if (screen == null) return;
+        PENDING_SCREEN.set(screen);
+        ensureTickDrainHooked();
+    }
+
     // -------- Trigger registration --------
 
     /**
@@ -339,7 +375,7 @@ public final class Hellow {
                 Screen screen = rule.factory().apply(opened);
                 if (screen != null) {
                     rule.strategy().markFired();
-                    Minecraft.getInstance().setScreen(screen);
+                    queueScreen(screen);
                     return screen;
                 }
             }
@@ -366,7 +402,7 @@ public final class Hellow {
             Screen screen = rule.factory().apply(event);
             if (screen != null) {
                 rule.strategy().markFired();
-                Minecraft.getInstance().setScreen(screen);
+                queueScreen(screen);
             }
         }
     }
@@ -381,7 +417,7 @@ public final class Hellow {
             Screen screen = rule.factory.apply(content.get());
             if (screen != null) {
                 rule.strategy.markFired();
-                Minecraft.getInstance().setScreen(screen);
+                queueScreen(screen);
             }
         }
     }

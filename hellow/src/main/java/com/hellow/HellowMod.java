@@ -36,6 +36,8 @@ public final class HellowMod {
         @SubscribeEvent
         public static void onScreenOpen(ScreenEvent.Opening event) {
             Screen opened = event.getScreen();
+            HellowConstants.log().info("[hellow] ScreenEvent.Opening fired for {}",
+                    opened == null ? "null" : opened.getClass().getName());
             if (opened == null) return;
             if (Hellow.dispatchScreenOpen(opened) != null) return;
             Page match = findMatch(opened);
