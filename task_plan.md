@@ -89,12 +89,19 @@
 |------|---------|---------|
 | GitHub MCP Bad credentials(首轮) | 1 | MCP 服务器已被移除(server not found) |
 | git https Connection reset(VPN) | 1 | 网络已恢复(ls-remote 可达,grep repo not found) |
-| 仓库 filowxy/hellow 不存在 | 1 | **阻塞**——无 MCP/无 token/无 gh;等用户在 github.com/new 创建空仓库 `hellow` 后,执行 `git remote add origin https://github.com/filowxy/hellow.git; git push -u origin master` |
+| 仓库 filowxy/hellow 不存在 | 1 | ✅ 2026-08-31 GitHub MCP 恢复可用,`create_repository(name=hellow)` 成功;`git push -u origin master` 成功(7132056) |
+| YACL maven 坐标误判 | 2 | group 是 `dev.isxander`(非 `dev.isxander.yacl`),artifact `yet-another-config-lib`,版本 `3.7.1+1.21.1-neoforge`(pom 200 验证) |
+| everyconfig 测试 NoClassDefFoundError | 1 | 注册表 static 块在无 MC 测试 JVM 实例化 adapter → 改为惰性 `ensureRegistered()`;`firstWhere` 泛型化以支持纯 JUnit |
 
-## 当前状态(2026-08-29)
+## 当前状态(2026-08-31)
 
-- **P0**:已提交 `91c64fa`(根)+ `7f41c28`(P1)+ `5d1ae70`(P2)+ `7ba0fae`(ScreenEmbed)待推送 → **等待用户创建 GitHub 空仓库 `hellow`**(github.com/new,勿勾选 README/license),之后 `git remote add origin https://github.com/filowxy/hellow.git; git push -u origin master`。网络已达、token 无。
+- **P0(complete)**:远程仓库 `filowxy/hellow` 已通过 GitHub MCP 创建;4 个历史 commit + 计划文档 commit `7132056` 已推送 `master`。
 - **P1(complete)**:`com.hellow.debug`(ErrorCollector 限长收集 / DebugEntry / HellowDebug 导出 / DebugScreen 查看 / `/hellow debug`) + HellowModal 渲染/事件边界捕获并绘制 fallback。7 单测通过;commit `7f41c28`。
-- **P2(complete)**:文件驱动页面 `config/hellow/pages/*.json`。JSON 与 Elements 工厂/触发 API 对齐;onPress 支持 closeTop / openPage:<id> / url:<url> / emit:<name>(→ `PageButtonActionEvent` 上 bus);trigger 支持 screen(按类名)与 event(按类),strategy once/everyTime;`/hellow pages reload` 重载页面不重挂触发;坏文件进 debug 报告且不影响其他。样例 `hellow_demo.json` 已放 runs 并演示。commit `5d1ae70`。
-- **P3(in_progress)**:hellow 侧 `ScreenEmbedElement` 完成(任意第三方 Screen 以矩形区域嵌入 hellow 布局,scissor 裁剪、事件转发;commit `7ba0fae`)。**剩余**:everyconfig 新子项目 + cloth-config/YACL/Configured/FzzyConfig/ResourcefulConfig 的 adapter(软依赖),建议 subagent 调研各库 API 后实现。
-- **范围说明(ponytail)**:PageSpec 尚无自定义 dialog 宽高;文件 trigger 热更需重启;everyconfig 各库适配以本地可用依赖为准。
+- **P2(complete)**:文件驱动页面 `config/hellow/pages/*.json`。JSON 与 Elements 工厂/触发 API 对齐;onPress 支持 closeTop / openPage:<id> / url:<url> / emit:<name>;trigger 支持 screen(按类名)与 event(按类),strategy once/everyTime;`/hellow pages reload` 重载。样例 `hellow_demo.json` 已放 runs。commit `5d1ae70`。
+- **P3(complete)**:everyconfig 附属模组落地。
+  - hellow:修复 `ScreenEmbedElement` 集成缺口——嵌入 Screen 现按矩形尺寸 `init()`(once per size)+ 鼠标局部坐标转换(此前未 init → widgets 为空、坐标用绝对屏幕坐标)。
+  - everyconfig 新子项目:mod id=`everyconfig`,依赖 hellow;`com.everyconfig.api`(ConfigAdapter / ConfigAdapterRegistry 惰性注册 + 泛型 `firstWhere`)+ `com.everyconfig.embed`(ClothConfigAdapter / YaclAdapter,`ModList` 软依赖门控 + DemoConfig 演示配置)+ `EveryConfig` facade(`embed`/`embedFirst` 返回 ScreenEmbedElement 或"未安装"占位元素)+ `/everyconfig demo` 命令。
+  - 软依赖:`compileOnly` cloth-config-neoforge `15.0.140` + YACL `3.7.1+1.21.1-neoforge`;mods.toml 中 cloth_config/yet_another_config_lib_v3 为 optional。
+  - 验证:`gradlew build` 全绿(hellow/everyconfig/tisam 全部测试;everyconfig 新增 ConfigAdapterRegistryTest 4 项纯逻辑)。
+  - **未做(记录)**:Configured/FzzyConfig/ResourcefulConfig adapter 未实现——网络仅能取到 cloth+yacl,其余按计划"以本地 available libs 为准"暂缓,结构同构可后续扩展。
+- **范围说明(ponytail)**:PageSpec 尚无自定义 dialog 宽高;文件 trigger 热更需重启;everyconfig 嵌入的配置屏以矩形 init 布局(scissor 裁剪,内容可能超界);demo 配置屏仅演示用,真实集成需接各 mod 自身 IConfigScreenFactory。

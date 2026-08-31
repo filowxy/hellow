@@ -357,3 +357,26 @@ API 对"声明式页面 + 事件触发"已够用（TISAM 用法成立），对"�
 **迁移后 vanilla 残留盘点**：TISAM 4 个模态屏的 chrome/body/底部按钮/卡片内容已全部 hellow 化；唯一保留的 vanilla 控件是 `TisamClientEvents.TitleScreenButton`（`AbstractWidget`，挂在 vanilla TitleScreen 上——hellow 不拥有 vanilla 标题屏 chrome，属"控件本体"，刻意保留）。
 
 **验证**：`gradlew build` 全绿（14 tasks）；最新 jar 已同步 runs/client/mods（8/29）。
+
+## R20：P3 everyconfig 实现 + ScreenEmbedElement 集成缺口（2026-08-31 会话 8）
+
+### 1. 依赖坐标（实测验证）
+- **Cloth Config**：`me.shedaniel.cloth:cloth-config-neoforge:15.0.140`（MC 1.21.1 线）@ `https://maven.shedaniel.me/`（可达）。
+- **YACL**：`dev.isxander:yet-another-config-lib:3.7.1+1.21.1-neoforge` @ `https://maven.isxander.dev/releases`（可达，pom 200）。
+  - **坑**：group 是 `dev.isxander`（不是 `dev.isxander.yacl`）；版本串含 `+`（pom 需 `%2B` 编码访问）；该 maven 仓库不提供目录列表（dir 404 正常）。
+  - 库 mod id：cloth=`cloth_config`，YACL=`yet_another_config_lib_v3`。
+- API 要点（subagent 调研）：Cloth `ConfigBuilder.create().setParentScreen/setTitle/setSavingRunnable + getOrCreateCategory + build()`→Screen；YACL `YetAnotherConfigLib.createBuilder().title/category(...).save(...).build().generateScreen(parent)`→Screen，且每个 Screen 需全新实例。
+
+### 2. ScreenEmbedElement 集成缺口（hellow 已修复）
+- 原实现（commit `7ba0fae`）从不调用嵌入 Screen 的 `init()` → 嵌入屏 widgets 为空，且把**绝对屏幕坐标**直传给嵌入屏（其布局是元素局部坐标）。
+- 修复：`ensureInit(ctx)` 按矩形尺寸 `init(mc,w,h)`（once per size，尺寸变化时重 init）；render/鼠标事件改用 `ctx.mouseX()-ctx.x()` 局部坐标。
+- 限制（记录）：嵌入屏内容超矩形被 scissor 裁剪；`init` 在尺寸抖动时可能重建 widgets。
+
+### 3. 软依赖 + 可测性设计
+- **compileOnly + ModList 门控**：adapter 类直接引用库类型，但 `createScreen` 只在 `isInstalled()` 为真后被调用（JVM 方法级惰性加载，缺库不崩）。
+- **注册表惰性化**：`ConfigAdapterRegistry` 用 `ensureRegistered()` 而非 static 块——否则在无 MC 的测试 JVM 里加载注册表类即触发 adapter 实例化 → NoClassDefFoundError。
+- **纯逻辑可测**：把"选第一个满足条件"抽成泛型 `firstWhere(List<T>, Predicate<T>)`，`firstInstalled()` 委托它 → 无需 MC 即可 JUnit 覆盖（4 项）。
+
+### 4. 范围说明
+- 只实现 cloth + YACL 两个引用 adapter；Configured/FzzyConfig/ResourcefulConfig 按计划"以本地 available libs 为准"暂缓（网络仅可及前两者）。
+- everyconfig 的 demo 配置屏（DemoConfig）仅演示嵌入机制；真实嵌入具体 mod 的配置需接 `IConfigScreenFactory`（后续方向）。

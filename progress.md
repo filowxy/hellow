@@ -389,19 +389,50 @@ java.lang.NoSuchMethodException: Screen.addRenderableWidget(net.minecraft.client
 - **vanilla æ®‹ç•™**ï¼šä»… `TisamClientEvents.TitleScreenButton`ï¼ˆvanilla TitleScreen ä¸Šçš„å…¥å£æŒ‰é’®ï¼Œåˆ»æ„ä¿ç•™ï¼‰ã€‚
 
 
-## »á»° 7(2026-08-29  Hellow ÉúÌ¬:debug/pages/ScreenEmbed)
+## ï¿½á»° 7(2026-08-29  Hellow ï¿½ï¿½Ì¬:debug/pages/ScreenEmbed)
 
-### »á»°ÈÎÎñ
-- È«Á¿´úÂëÉó²é(Á½¸ö subagent) ĞŞ¸´ 8 ´¦¸ß¼ÛÖµÎÊÌâ(CLAMPED ½Ø¶Ï¡¢¹ö¶¯±£Áô¡¢ÃâÔğÉùÃ÷¿É¹ö¶¯¡¢¹ö¶¯ÌõÃüÖĞ¡¢null type µÈ)+ ÌáĞÑË¥¼õ±í + modules.json Èİ´í·´ĞòÁĞ»¯(º¬µ¥²â)
-- ±êÌâ°´Å¥¸ÄÔ­°æ Button.builder ¸ñÊ½;»á»°ÄÚ Later Ö»¼ÆÒ»´Î;preview ²»ÔÙÎŞÏŞÖØµ¯
-- ×÷Õß filowxy ÒÑÂäÔÚ hellow/tisam/root ÔªÊı¾İ;´´½¨ hellow/README.md(¹¦ÄÜ+API Ë«ÓïÖÕ°æÓ¢ÎÄ)
+### ï¿½á»°ï¿½ï¿½ï¿½ï¿½
+- È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ subagent) ï¿½Ş¸ï¿½ 8 ï¿½ï¿½ï¿½ß¼ï¿½Öµï¿½ï¿½ï¿½ï¿½(CLAMPED ï¿½Ø¶Ï¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½null type ï¿½ï¿½)+ ï¿½ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½ï¿½ï¿½ + modules.json ï¿½İ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ»ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+- ï¿½ï¿½ï¿½â°´Å¥ï¿½ï¿½Ô­ï¿½ï¿½ Button.builder ï¿½ï¿½Ê½;ï¿½á»°ï¿½ï¿½ Later Ö»ï¿½ï¿½Ò»ï¿½ï¿½;preview ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½
+- ï¿½ï¿½ï¿½ï¿½ filowxy ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ hellow/tisam/root Ôªï¿½ï¿½ï¿½ï¿½;ï¿½ï¿½ï¿½ï¿½ hellow/README.md(ï¿½ï¿½ï¿½ï¿½+API Ë«ï¿½ï¿½ï¿½Õ°ï¿½Ó¢ï¿½ï¿½)
 
-### µ±Ç°»á»°ĞÂĞèÇó(ÓÃ»§):ÍÆËÍ + debug + ÎÄ¼şÒ³Ãæ + everyconfig
-- **P0**:4 ¸ö±¾µØ commit(91c64fa/7f41c28/5d1ae70/7ba0fae)´ò°ü;Ô¶¶Ë²Ö¿â filowxy/hellow ²»´æÔÚ & ÎŞ GitHub token/gh  **´ıÓÃ»§½¨²Öºó push**
-- **P1 Íê³É**:com.hellow.debug(ErrorCollector/DebugEntry/HellowDebug/DebugScreen/ÃüÁî)+ HellowModal render|mouse|key ±ß½ç²¶»ñ;7 µ¥²âÍ¨¹ı
-- **P2 Íê³É**:config/hellow/pages/*.json ÎÄ¼şÒ³Ãæ(ÔªËØÊ÷=Elements ¹¤³§,onPress ¶¯×÷¼¯,trigger Ö§³Ö screen/event + once/everyTime;/hellow pages reload;»µÎÄ¼ş½ø debug ±¨¸æ);ÔËĞĞÑùÀı hellow_demo.json
-- **P3 ²¿·Ö**:ScreenEmbedElement(ÈÎÒâ Screen ¾ØĞÎÇ¶Èë hellow,scissor+ÊÂ¼ş×ª·¢)Íê³É;everyconfig ×ÓÏîÄ¿Óë¸÷ÅäÖÃ¿â adapter ´ı×ö(Äâ subagent µ÷ÑĞ cloth-config/YACL/Configured/FzzyConfig/ResourcefulConfig)
+### ï¿½ï¿½Ç°ï¿½á»°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ã»ï¿½):ï¿½ï¿½ï¿½ï¿½ + debug + ï¿½Ä¼ï¿½Ò³ï¿½ï¿½ + everyconfig
+- **P0**:4 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ commit(91c64fa/7f41c28/5d1ae70/7ba0fae)ï¿½ï¿½ï¿½;Ô¶ï¿½Ë²Ö¿ï¿½ filowxy/hellow ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ & ï¿½ï¿½ GitHub token/gh  **ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Öºï¿½ push**
+- **P1 ï¿½ï¿½ï¿½**:com.hellow.debug(ErrorCollector/DebugEntry/HellowDebug/DebugScreen/ï¿½ï¿½ï¿½ï¿½)+ HellowModal render|mouse|key ï¿½ß½ç²¶ï¿½ï¿½;7 ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½
+- **P2 ï¿½ï¿½ï¿½**:config/hellow/pages/*.json ï¿½Ä¼ï¿½Ò³ï¿½ï¿½(Ôªï¿½ï¿½ï¿½ï¿½=Elements ï¿½ï¿½ï¿½ï¿½,onPress ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,trigger Ö§ï¿½ï¿½ screen/event + once/everyTime;/hellow pages reload;ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ debug ï¿½ï¿½ï¿½ï¿½);ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ hellow_demo.json
+- **P3 ï¿½ï¿½ï¿½ï¿½**:ScreenEmbedElement(ï¿½ï¿½ï¿½ï¿½ Screen ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½ï¿½ hellow,scissor+ï¿½Â¼ï¿½×ªï¿½ï¿½)ï¿½ï¿½ï¿½;everyconfig ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ adapter ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ subagent ï¿½ï¿½ï¿½ï¿½ cloth-config/YACL/Configured/FzzyConfig/ResourcefulConfig)
 
-### ²âÊÔ/Ìá½»
-- :hellow:test Í¨¹ı(37 tests);Öğ½×¶Î git commit(4 ¸öĞÂÔö)
+### ï¿½ï¿½ï¿½ï¿½/ï¿½á½»
+- :hellow:test Í¨ï¿½ï¿½(37 tests);ï¿½ï¿½×¶ï¿½ git commit(4 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+
+## ä¼šè¯ 8ï¼ˆ2026-08-31 Â· P0 æ¨é€ + P3 everyconfig å®Œæˆï¼‰
+
+### å¯åŠ¨
+- ç”¨æˆ·ï¼šç”¨ plan-plus+ è¯»å–è®¡åˆ’ï¼Œæäº¤ GitHub ä»“åº“ï¼ŒæŒ‰è®¡åˆ’ç»§ç»­æ¨è¿›ï¼ˆå¯ç”¨å­ agentï¼‰
+
+### P0ï¼šGit æ¨é€å®Œæˆï¼ˆé˜»å¡è§£é™¤ï¼‰
+- GitHub MCP æœåŠ¡å™¨æ¢å¤å¯ç”¨ â†’ `create_repository(name=hellow)` åˆ›å»º `filowxy/hellow` æˆåŠŸï¼ˆpublic, autoInit=falseï¼‰
+- æäº¤è®¡åˆ’æ–‡æ¡£å˜æ›´ï¼ˆtask_plan/progress/findingsï¼‰commit `7132056`ï¼ˆæœ¬åœ° identity é…ç½®ä¸º filowxyï¼‰
+- `git push -u origin master` æˆåŠŸï¼Œ`git ls-remote` éªŒè¯è¿œç«¯ HEAD = 7132056
+
+### P3ï¼ševeryconfig é™„å±æ¨¡ç»„ï¼ˆå‰©ä½™å·¥ä½œå®Œæˆï¼‰
+- **ä¾èµ–è°ƒç ”ï¼ˆsubagentï¼‰**ï¼šcloth-config-neoforge `15.0.140`ï¼ˆMC 1.21.1ï¼‰@ maven.shedaniel.meï¼›YACL `3.7.1+1.21.1-neoforge` @ maven.isxander.dev/releasesï¼ˆgroup ä¸º `dev.isxander`ï¼Œé¦–æ¬¡æŒ‰ `dev.isxander.yacl` è¯¯åˆ¤ 404ï¼Œå·²çº æ­£ï¼‰ï¼›ä¸¤è€…ä»“åº“å¯è¾¾æ€§å®æµ‹ OK
+- **hellow ä¿®å¤**ï¼š`ScreenEmbedElement` é›†æˆç¼ºå£â€”â€”åµŒå…¥ Screen ç°æŒ‰çŸ©å½¢å°ºå¯¸ `init()`ï¼ˆonce per sizeï¼‰+ é¼ æ ‡åæ ‡ä»ç»å¯¹å±å¹•åæ ‡è½¬ä¸ºå…ƒç´ å±€éƒ¨åæ ‡ï¼ˆæ­¤å‰ä¸ init â†’ widgets ä¸ºç©ºï¼Œç‚¹å‡»/æ¸²æŸ“åæ ‡é”™ä½ï¼‰
+- **everyconfig æ–°å­é¡¹ç›®**ï¼š
+  - build.gradle.ktsï¼šmoddev + `compileOnly` cloth/yaclï¼ˆè½¯ä¾èµ–ï¼Œè¿è¡ŒæœŸç”± ModList é—¨æ§ï¼‰ï¼›repositories åŠ  shedaniel/isxander
+  - mods.tomlï¼šhellow å¿…éœ€ä¾èµ–ï¼Œcloth_config / yet_another_config_lib_v3 å¯é€‰ä¾èµ–
+  - `com.everyconfig.api.ConfigAdapter`ï¼ˆlibraryId/displayName/isInstalled/createScreenï¼‰
+  - `com.everyconfig.api.ConfigAdapterRegistry`ï¼šæƒ°æ€§æ³¨å†Œï¼ˆé¿å…æ—  MC æµ‹è¯• JVM åŠ è½½ adapterï¼‰+ æ³›å‹ `firstWhere` çº¯é€»è¾‘
+  - `com.everyconfig.embed.ClothConfigAdapter` / `YaclAdapter`ï¼ˆModList è½¯ä¾èµ–é—¨æ§ + DemoConfig æ¼”ç¤ºæ¡ç›®ï¼‰
+  - `com.everyconfig.EveryConfig`ï¼š@Mod(Dist.CLIENT) + facadeï¼ˆ`embed`/`embedFirst` â†’ ScreenEmbedElement æˆ–"æœªå®‰è£…"å ä½å…ƒç´ ï¼‰+ `/everyconfig demo` å‘½ä»¤
+- **æµ‹è¯•**ï¼š`ConfigAdapterRegistryTest` 4 é¡¹çº¯ JUnitï¼ˆfirstWhere é€‰æ‹©é¡ºåº/è°“è¯/ç©ºï¼‰
+- **æ„å»º**ï¼š`:everyconfig:compileJava` é€šè¿‡ï¼›`gradlew build` å…¨ç»¿ï¼ˆhellow/everyconfig/tisam å…¨éƒ¨æµ‹è¯•ï¼‰
+
+### è¿‡ç¨‹ä¸­é‡åˆ°çš„é—®é¢˜ï¼ˆå·²è®°å…¥ task_plan é”™è¯¯è¡¨ï¼‰
+1. YACL maven åæ ‡è¯¯åˆ¤ï¼ˆgroup åº”ä¸º dev.isxanderï¼Œé dev.isxander.yaclï¼‰
+2. everyconfig æµ‹è¯• NoClassDefFoundErrorï¼šæ³¨å†Œè¡¨ static å—åœ¨æ—  MC æµ‹è¯• JVM å®ä¾‹åŒ– adapter â†’ æ”¹æƒ°æ€§ ensureRegistered()
+
+### å¾…åŠï¼ˆç¯å¢ƒå¤–ï¼‰
+- `runClient` æ¸¸æˆå†…éªŒè¯ï¼šè£… cloth-config æˆ– YACL å `/everyconfig demo` åº”å¼¹å‡ºåµŒå…¥çš„é…ç½®å±ï¼›ä¸è£…åˆ™æ˜¾ç¤º"æœªå®‰è£…"å ä½
+- Configured/FzzyConfig/ResourcefulConfig adapter æŒ‰è®¡åˆ’æš‚ç¼“ï¼ˆç½‘ç»œä»…å¯åŠ cloth+yaclï¼‰ï¼Œç»“æ„åŒæ„å¯åç»­æ‰©å±•
 

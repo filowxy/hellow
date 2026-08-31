@@ -11,7 +11,9 @@ plugins {
 rootProject.name = "tisam-parent"
 
 // Subprojects
-//   :hellow — pure UI window manager library (no Minecraft-specific mod bindings)
-//   :tisam  — the actual NeoForge mod that depends on :hellow
+//   :hellow      — pure UI window manager library (no Minecraft-specific mod bindings)
+//   :tisam       — the actual NeoForge mod that depends on :hellow
+//   :everyconfig — companion mod that embeds third-party config screens into hellow
 include(":hellow")
 include(":tisam")
+include(":everyconfig")

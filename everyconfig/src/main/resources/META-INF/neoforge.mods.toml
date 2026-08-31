@@ -1,0 +1,45 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "Apache-2.0"
+
+[[mods]]
+modId = "everyconfig"
+version = "1.0.0"
+displayName = "EveryConfig"
+authors = "filowxy"
+description = "Embeds third-party config-library screens (Cloth Config, YACL, ...) into hellow pages as normal elements. Config libraries are optional; missing ones show a placeholder."
+
+[[dependencies.everyconfig]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.233,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.everyconfig]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.everyconfig]]
+modId = "hellow"
+type = "required"
+versionRange = "[1.0.0,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.everyconfig]]
+modId = "cloth_config"
+type = "optional"
+versionRange = "[15.0.140,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.everyconfig]]
+modId = "yet_another_config_lib_v3"
+type = "optional"
+versionRange = "[3.7.1,)"
+ordering = "NONE"
+side = "CLIENT"
