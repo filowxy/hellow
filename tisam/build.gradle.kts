@@ -74,7 +74,7 @@ group = "com.tisam"
 dependencies {
     implementation(project(":hellow"))
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.1.3")
     // Gson is a runtime dep of Minecraft; the unit-test classpath doesn't inherit
     // it, and ModuleEntry's config tests exercise the lenient deserializer directly.
     testImplementation("com.google.code.gson:gson:2.11.0")
