@@ -32,7 +32,7 @@ dependencies {
     // HellowConstants uses SLF4J; at runtime the Minecraft launcher provides it.
     implementation("org.slf4j:slf4j-api:2.0.9")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.1.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
 }
 
