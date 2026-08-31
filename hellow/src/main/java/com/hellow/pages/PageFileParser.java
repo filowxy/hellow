@@ -11,6 +11,7 @@ import com.hellow.element.BoxElement;
 import com.hellow.element.ButtonElement;
 import com.hellow.element.ColumnElement;
 import com.hellow.element.Element;
+import com.hellow.element.ElementRegistry;
 import com.hellow.element.Elements;
 import com.hellow.element.EnumElement;
 import com.hellow.element.FillElement;
@@ -127,9 +128,19 @@ public final class PageFileParser {
                     v -> emitValue(where, v));
             case "enumSelect" -> enumSelect(o, where);
             case "box" -> box(o, where);
-            default -> throw new IllegalArgumentException(
-                    where + ": unknown element type '" + type + "'");
+            // Custom element types registered by other mods (e.g. everyconfig's
+            // "configEmbed") resolve through ElementRegistry with the JSON object
+            // as the factory args.
+            default -> customElement(type, o, where);
         };
+    }
+
+    private static Element customElement(String type, JsonObject o, String where) {
+        if (!ElementRegistry.contains(type)) {
+            throw new IllegalArgumentException(where + ": unknown element type '" + type
+                    + "' (not a built-in type and no custom factory registered for it)");
+        }
+        return ElementRegistry.create(type, o);
     }
 
     private static Element column(JsonObject o, String where) {

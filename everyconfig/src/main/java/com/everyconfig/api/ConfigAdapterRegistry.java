@@ -70,4 +70,31 @@ public final class ConfigAdapterRegistry {
     public static Optional<ConfigAdapter> firstInstalled() {
         return firstWhere(all(), ConfigAdapter::isInstalled);
     }
+
+    /**
+     * First installed adapter among {@code preferredIds}, honoring the caller's
+     * order; empty when none of the preferred libraries is installed. Unknown ids
+     * are ignored.
+     */
+    public static Optional<ConfigAdapter> firstInstalledIn(List<String> preferredIds) {
+        return firstWhere(orderedByKey(all(), preferredIds, ConfigAdapter::libraryId),
+                ConfigAdapter::isInstalled);
+    }
+
+    /**
+     * Pure selection helper (unit-testable without Minecraft): reorder {@code items}
+     * so they follow {@code preferredKeys} order, dropping items whose key does not
+     * appear in the preference list. Same shape as {@link #firstWhere}.
+     */
+    public static <T, K> List<T> orderedByKey(List<T> items, List<K> preferredKeys,
+                                              java.util.function.Function<T, K> keyFn) {
+        Map<K, T> byKey = new LinkedHashMap<>();
+        for (T item : items) byKey.put(keyFn.apply(item), item);
+        List<T> ordered = new ArrayList<>();
+        for (K key : preferredKeys) {
+            T item = byKey.get(key);
+            if (item != null) ordered.add(item);
+        }
+        return ordered;
+    }
 }

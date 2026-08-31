@@ -39,3 +39,15 @@ runs/
 **/src/generated/**/.cache/
 repo/
 !**/src/**/repo/
+
+### Non-code content (keep README only) ###
+*.md
+!README.md
+!**/README.md
+*.log
+.cache/
+compile_errors.txt
+hs_err_*.log
+replay_*.log
+crash-reports/
+screenshots/

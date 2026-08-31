@@ -25,9 +25,11 @@ import java.util.stream.Stream;
  * {@code HellowPages.register} + {@code Hellow.when*}. One bad file is reported to
  * the debug facility and skipped — it never wipes the pages that parsed fine.
  *
- * <p>Triggers are hooked on the first {@link #load()} only; the reload command
- * re-registers pages under the same ids (replacing the page body) without adding
- * duplicate triggers (ponytail: changing a page's trigger still needs a restart).
+ * <p>Triggers are hooked once per page id: the first time a file under a given id
+ * parses successfully its trigger is registered; re-loading the same id replaces the
+ * page body without adding duplicate triggers. This also lets a mod that registers
+ * custom element factories AFTER hellow (e.g. everyconfig's {@code configEmbed})
+ * re-run {@link #load()} so its pages parse and their triggers hook correctly.
  */
 public final class PageFileLoader {
 
@@ -35,7 +37,9 @@ public final class PageFileLoader {
 
     private PageFileLoader() {}
 
-    private static boolean triggersHooked = false;
+    /** Page ids whose trigger has already been hooked into Hellow. */
+    private static final java.util.Set<String> HOOKED_IDS =
+            java.util.concurrent.ConcurrentHashMap.newKeySet();
 
     public static Path pagesDir() {
         return FMLPaths.CONFIGDIR.get().resolve("hellow/pages");
@@ -68,9 +72,8 @@ public final class PageFileLoader {
             }
         }
 
-        if (!triggersHooked) {
-            for (PageFileDef def : ok) hookTrigger(def);
-            triggersHooked = true;
+        for (PageFileDef def : ok) {
+            if (HOOKED_IDS.add(def.page().id().value())) hookTrigger(def);
         }
         return ok.size();
     }

@@ -5,15 +5,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 /**
- * Experimental tag-based element factory registry.
+ * Tag-based element factory registry — the extension point for custom element types.
  *
- * <p>(ponytail: half-finished — {@link #register(String, ElementFactory)} is never
- * called and no default factories are registered; layout elements are constructed
- * directly via {@code Elements} / their classes instead. Kept only as a possible future
- * basis for a DSL/JSON page format. Do not build on it.)
+ * <p>Mods that want their own element to appear inside hand-written pages
+ * ({@code config/hellow/pages/*.json}) register a factory under a tag here;
+ * {@link com.hellow.pages.PageFileParser} falls back to this registry for any
+ * element type it does not know natively (the page JSON's {@code type} is the tag).
+ * A tag is either a plain lower-case name ({@code configEmbed}) or namespaced
+ * ({@code ns:name}); the parser passes the JSON object of the element as the
+ * factory's {@code args}.
  */
 public final class ElementRegistry {
-    private static final Pattern TAG = Pattern.compile("[a-z0-9_]+:[a-z0-9_]+");
+    private static final Pattern TAG = Pattern.compile("[a-z0-9_]+(:[a-z0-9_]+)?");
     private static final Map<String, ElementFactory> FACTORIES = new ConcurrentHashMap<>();
 
     private ElementRegistry() {}

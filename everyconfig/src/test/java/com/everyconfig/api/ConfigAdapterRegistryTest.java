@@ -33,4 +33,20 @@ class ConfigAdapterRegistryTest {
     void emptyWhenListEmpty() {
         assertTrue(ConfigAdapterRegistry.firstWhere(List.of(), s -> true).isEmpty());
     }
+
+    // -------- orderedByKey (preference order for hand-written configEmbed pages) --------
+
+    @Test
+    void orderedByKeyFollowsPreferenceOverIteration() {
+        List<String> items = List.of("cloth_config", "yacl");
+        List<String> out = ConfigAdapterRegistry.orderedByKey(items, List.of("yacl", "cloth_config"), s -> s);
+        assertEquals(List.of("yacl", "cloth_config"), out);
+    }
+
+    @Test
+    void orderedByKeySkipsUnknownKeys() {
+        List<String> items = List.of("cloth_config");
+        List<String> out = ConfigAdapterRegistry.orderedByKey(items, List.of("unknown", "cloth_config"), s -> s);
+        assertEquals(List.of("cloth_config"), out);
+    }
 }
