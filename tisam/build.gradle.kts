@@ -77,7 +77,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     // Gson is a runtime dep of Minecraft; the unit-test classpath doesn't inherit
     // it, and ModuleEntry's config tests exercise the lenient deserializer directly.
-    testImplementation("com.google.code.gson:gson:2.11.0")
+    testImplementation("com.google.code.gson:gson:2.14.0")
     // Gradle's jvm-test-suite plugin requires the launcher on the runtime
     // classpath, not just the test classpath. Without this you get a
     // "Failed to load JUnit Platform" error at test-execution time.
