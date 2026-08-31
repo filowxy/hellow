@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * factory's {@code args}.
  */
 public final class ElementRegistry {
-    private static final Pattern TAG = Pattern.compile("[a-z0-9_]+(:[a-z0-9_]+)?");
+    private static final Pattern TAG = Pattern.compile("[a-zA-Z0-9_]+(:[a-zA-Z0-9_]+)?");
     private static final Map<String, ElementFactory> FACTORIES = new ConcurrentHashMap<>();
 
     private ElementRegistry() {}
