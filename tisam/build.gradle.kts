@@ -86,7 +86,7 @@ dependencies {
     // missing from the unit-test runtime classpath. The constants in
     // TisamConstants reference LoggerFactory, which fails
     // NoClassDefFoundError at test time without this.
-    testRuntimeOnly("org.slf4j:slf4j-api:2.0.9")
+    testRuntimeOnly("org.slf4j:slf4j-api:2.0.18")
 }
 
 tasks.withType<Test>().configureEach {
