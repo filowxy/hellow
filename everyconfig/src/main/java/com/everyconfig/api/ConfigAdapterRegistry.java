@@ -29,6 +29,8 @@ public final class ConfigAdapterRegistry {
         // Reference adapters; further libraries are added the same way.
         register(new com.everyconfig.embed.ClothConfigAdapter());
         register(new com.everyconfig.embed.YaclAdapter());
+        // A real cloth-config-based mod's config screen (REI's settings UI).
+        register(new com.everyconfig.embed.ReiConfigAdapter());
     }
 
     public static synchronized void register(ConfigAdapter adapter) {

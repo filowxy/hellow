@@ -43,6 +43,9 @@ dependencies {
     // adapter checks ModList before touching these classes.
     compileOnly("me.shedaniel.cloth:cloth-config-neoforge:15.0.140")
     compileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.1-neoforge")
+    // A real mod whose config screen is built with Cloth Config — its adapter
+    // injects the mod's actual config screen (REI's REI Settings), not a demo.
+    compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:16.0.788")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
