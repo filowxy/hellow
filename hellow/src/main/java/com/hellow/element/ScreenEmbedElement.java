@@ -2,34 +2,41 @@ package com.hellow.element;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 /**
  * Embeds an arbitrary third-party {@link Screen} into a hellow layout as an element:
- * renders the screen inside the element's rectangle (scissor-clipped) and forwards
- * mouse/keyboard events with the element's coordinates. This is how everyconfig-style
- * mods surface another config library's UI inside a hellow page.
+ * renders the screen inside the element's rectangle and forwards mouse/keyboard
+ * events with the element's coordinates. This is how everyconfig-style mods surface
+ * another config library's UI inside a hellow page.
  *
- * <p>The embedded screen is {@link Screen#init(Minecraft, int, int) initialized}
- * against the element's rectangle (once per size) so its widgets lay out inside the
- * rectangle, and mouse coordinates are translated from absolute screen space to
- * element-local space before being forwarded.
+ * <p><b>Scaling.</b> Config screens (Cloth Config, REI, ...) lay out against a
+ * full-window size, so squeezed into a small embed rectangle their content becomes
+ * unreadable. Instead the embedded screen is initialized against a fixed
+ * {@link #DESIGN_W}/{@link #DESIGN_H} virtual canvas (a typical config-window
+ * resolution) and the whole thing is scaled down to fit the element rectangle —
+ * content stays properly laid out and fully visible. Mouse coordinates are divided
+ * by the same scale before being forwarded, so the embedded screen's own scrolling
+ * (list scrollbar, drag) still works.
  *
- * <p>Note (ponytail): embedded screens lay out their widgets against their own window
- * size, so content may overflow the rectangle — the scissor clips it. The element's
- * {@code height} is a stylistic hint; wrap it in a {@code box(...)} / {@code scroll(...)}
- * for borders or scrolling. Background dim: if the embedded screen fills its own
- * background it will show inside the rectangle.
+ * <p>Note (ponytail): the element's {@code height} hint sets the *element* size; the
+ * embedded screen is always laid out at the fixed design resolution and scaled to
+ * fit, so a taller element shows the config screen larger, never squeezed.
  */
 public final class ScreenEmbedElement implements Element {
+
+    // Fixed virtual resolution the embedded screen is laid out against — a typical
+    // config-window size that keeps labels/rows readable before scaling to fit.
+    private static final int DESIGN_W = 320;
+    private static final int DESIGN_H = 240;
 
     private final Screen embedded;
     private final int hintHeight;
 
-    // Last size the embedded screen was initialized with; re-init when it changes.
-    private int initW = -1;
-    private int initH = -1;
+    // Whether the embedded screen has been initialized at the design resolution.
+    private boolean initialized = false;
 
     public ScreenEmbedElement(Screen embedded) {
         this(embedded, 120);
@@ -53,7 +60,7 @@ public final class ScreenEmbedElement implements Element {
         return this.hintHeight;
     }
 
-    /** Element-local mouse X inside the rectangle (embedded screens use local coords). */
+    /** Element-local mouse X inside the rectangle. */
     private static int localX(RenderContext ctx) {
         return ctx.mouseX() - ctx.x();
     }
@@ -63,48 +70,70 @@ public final class ScreenEmbedElement implements Element {
         return ctx.mouseY() - ctx.y();
     }
 
-    /** Lay the embedded screen out against the current rectangle once per size. */
+    /**
+     * Uniform scale that fits the fixed {@link #DESIGN_W}/{@link #DESIGN_H} canvas
+     * into the element rectangle (the embedded screen keeps its aspect).
+     */
+    private float scale(RenderContext ctx) {
+        int rectW = Math.max(1, ctx.width());
+        int rectH = Math.max(1, height(ctx.font(), rectW));
+        return Math.min((float) rectW / DESIGN_W, (float) rectH / DESIGN_H);
+    }
+
+    /** Lay the embedded screen out against the fixed design resolution once. */
     private void ensureInit(RenderContext ctx) {
-        int w = ctx.width();
-        int h = height(ctx.font(), w);
-        if (this.initW == w && this.initH == h) return;
-        this.initW = w;
-        this.initH = h;
+        if (this.initialized) return;
+        this.initialized = true;
         Minecraft mc = Minecraft.getInstance();
         if (mc != null) {
-            this.embedded.init(mc, w, h);
+            this.embedded.init(mc, DESIGN_W, DESIGN_H);
         }
+    }
+
+    /** Element-local mouse coordinates mapped into the embedded screen's design space. */
+    private int designX(RenderContext ctx) {
+        return (int) (localX(ctx) / scale(ctx));
+    }
+
+    private int designY(RenderContext ctx) {
+        return (int) (localY(ctx) / scale(ctx));
     }
 
     @Override
     public void render(RenderContext ctx) {
         if (ctx.g() == null) return;
-        int h = height(ctx.font(), ctx.width());
         ensureInit(ctx);
-        ctx.g().enableScissor(ctx.x(), ctx.y(), ctx.x() + ctx.width(), ctx.y() + h);
+        float s = scale(ctx);
+        GuiGraphics g = ctx.g();
+        // Fit the virtual canvas into the element rectangle (top-left aligned).
+        g.pose().pushPose();
+        g.pose().translate(ctx.x(), ctx.y(), 0.0F);
+        g.pose().scale(s, s, 1.0F);
+        g.enableScissor(ctx.x(), ctx.y(), ctx.x() + ctx.width(), ctx.y() + height(ctx.font(), ctx.width()));
         try {
-            this.embedded.render(ctx.g(), localX(ctx), localY(ctx), 0.0F);
+            this.embedded.render(g, designX(ctx), designY(ctx), 0.0F);
         } finally {
-            ctx.g().disableScissor();
+            g.disableScissor();
+            g.pose().popPose();
         }
     }
 
     @Override
     public boolean mouseClicked(RenderContext ctx, int button) {
         ensureInit(ctx);
-        return this.embedded.mouseClicked(localX(ctx), localY(ctx), button);
+        return this.embedded.mouseClicked(designX(ctx), designY(ctx), button);
     }
 
     @Override
     public boolean mouseScrolled(RenderContext ctx, double dX, double dY) {
         ensureInit(ctx);
-        return this.embedded.mouseScrolled(localX(ctx), localY(ctx), dX, dY);
+        return this.embedded.mouseScrolled(designX(ctx), designY(ctx), dX, dY);
     }
 
     @Override
     public boolean mouseDragged(RenderContext ctx, int button, double dragX, double dragY) {
         ensureInit(ctx);
-        return this.embedded.mouseDragged(localX(ctx), localY(ctx), button, dragX, dragY);
+        return this.embedded.mouseDragged(designX(ctx), designY(ctx), button, dragX, dragY);
     }
 
     @Override

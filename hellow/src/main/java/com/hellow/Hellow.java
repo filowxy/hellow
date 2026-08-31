@@ -5,6 +5,7 @@ import com.hellow.page.Page;
 import com.hellow.page.PageId;
 import com.hellow.page.PageLayer;
 import com.hellow.page.PageScheduler;
+import com.hellow.page.PageScreen;
 import com.hellow.page.PageSpec;
 import com.hellow.trigger.Condition;
 import net.minecraft.client.Minecraft;
@@ -167,9 +168,16 @@ public final class Hellow {
 
     private static void drainPendingScreen() {
         Screen pending = PENDING_SCREEN.getAndSet(null);
-        if (pending != null) {
-            Minecraft.getInstance().setScreen(pending);
+        if (pending == null) return;
+        // The trigger fired from ScreenEvent.Opening, which happens *before* the
+        // outer setScreen() assigns mc.screen — so at trigger time the parent was
+        // whatever screen was current before the one that's now opening (e.g. the
+        // boot "Loading Minecraft" screen). By the time we drain on the next tick
+        // the opening screen is fully set, so re-parent to the current screen.
+        if (pending instanceof PageScreen ps) {
+            ps.reparent(Minecraft.getInstance().screen);
         }
+        Minecraft.getInstance().setScreen(pending);
     }
 
     /** Queue {@code screen} to open on the next client tick (deferred, see above). */

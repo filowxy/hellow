@@ -26,7 +26,7 @@ public final class PageScreen extends Screen {
     private static final int PANEL_PADDING = 2;
 
     private final Page page;
-    private final Screen parent;
+    private Screen parent;
     private final String titleText;
     private final HellowTheme theme;
     private boolean mounted = false;
@@ -46,6 +46,17 @@ public final class PageScreen extends Screen {
     }
 
     public Page page() { return this.page; }
+
+    /**
+     * Override the screen this page returns to on close. Used when the page was
+     * opened from a trigger whose {@code ScreenEvent.Opening} fired before the
+     * underlying screen was actually set (so the constructor-time parent is the
+     * stale screen, e.g. the "Loading Minecraft" boot screen) — the real parent is
+     * only known at the moment the page is actually displayed.
+     */
+    public void reparent(Screen parent) {
+        this.parent = parent;
+    }
 
     private static String titleOf(Page page) {
         if (page instanceof PageSpec spec) return spec.titleKey();
