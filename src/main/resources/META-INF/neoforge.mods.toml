@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "Apache-2.0"
+
+[[mods]]
+modId = "hellow"
+version = "1.0.0"
+displayName = "Hellow"
+authors = "filowxy"
+description = "Hellow — condition-driven window manager for NeoForge mods. Callers register 'when X, show Y' rules; Hellow owns the screen lifecycle."
+
+[[dependencies.hellow]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.233,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.hellow]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "CLIENT"
+
+# Prism (color library) is a hard runtime dependency: HellowColors bridges to
+# its API directly, so a missing Prism must fail loudly at launch (dependency
+# screen) instead of crashing at first colored render. Prism colors dropped
+# into Component styles animate automatically under vanilla text rendering.
+[[dependencies.hellow]]
+modId = "prism"
+type = "required"
+versionRange = "[1.0,)"
+ordering = "AFTER"
+side = "CLIENT"
