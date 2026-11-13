@@ -119,7 +119,7 @@ class HellowDslTest {
     @Test
     void rejectsRootWithoutBody() {
         assertThrows(IllegalArgumentException.class,
-                () -> HellowDsl.parse("page a \"A\"\n"));
+                () -> HellowDsl.toPageJson(HellowDsl.parse("page a \"A\"\n")));
     }
 
     @Test
