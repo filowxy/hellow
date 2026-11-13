@@ -16,6 +16,8 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: 'org.junit.platform:*'
         update-types: ['version-update:semver-major']
+      # NeoForge 21.1.241 pins slf4j strictly to 2.0.9; newer versions fail resolution.
+      - dependency-name: 'org.slf4j:slf4j-api'
 
   - package-ecosystem: 'github-actions'
     directory: '/'

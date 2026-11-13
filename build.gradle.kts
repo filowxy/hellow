@@ -30,7 +30,9 @@ group = "com.hellow"
 
 dependencies {
     // HellowConstants uses SLF4J; at runtime the Minecraft launcher provides it.
-    implementation("org.slf4j:slf4j-api:2.0.18")
+    // NeoForge 21.1.241's minecraft-dependencies pins slf4j strictly to 2.0.9,
+    // so a newer version fails resolution instead of upgrading.
+    implementation("org.slf4j:slf4j-api:2.0.9")
 
     // Prism (color library) — REQUIRED runtime dependency of Hellow, declared in
     // neoforge.mods.toml. Vendored as a jar because the Modrinth Maven's
