@@ -30,7 +30,7 @@ group = "com.hellow"
 
 dependencies {
     // HellowConstants uses SLF4J; at runtime the Minecraft launcher provides it.
-    implementation("org.slf4j:slf4j-api:2.0.9")
+    implementation("org.slf4j:slf4j-api:2.0.18")
 
     // Prism (color library) — REQUIRED runtime dependency of Hellow, declared in
     // neoforge.mods.toml. Vendored as a jar because the Modrinth Maven's
@@ -43,8 +43,8 @@ dependencies {
     // and bump the file name below.
     api(files("libs/Prism-1.21.1-neoforge-1.0.11.jar"))
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.4")
 }
 
 tasks.withType<Test>().configureEach {
