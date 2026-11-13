@@ -6,7 +6,6 @@ import com.hellow.pages.HellowDsl.DslNode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -133,7 +132,8 @@ class HellowDslTest {
     void ignoresBlankLinesAndComments() {
         DslNode root = HellowDsl.parse("# leading comment\n\npage a \"A\"\n\n  # inner\n  text \"x\"\n\n");
         assertEquals(1, root.children().size());
-        assertFalse(root.children().get(0).children().isEmpty());
-        assertTrue(root.children().get(0).args().contains("x"));
+        DslNode text = root.children().get(0);
+        assertEquals("text", text.type());
+        assertTrue(text.args().contains("x"));
     }
 }
