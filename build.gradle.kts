@@ -46,6 +46,9 @@ dependencies {
     api(files("libs/Prism-1.21.1-neoforge-1.0.11.jar"))
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    // Gson is provided by Minecraft at runtime; the bare test JVM needs its own
+    // copy for HellowDslTest (page DSL to JsonObject).
+    testImplementation("com.google.code.gson:gson:2.10.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.4")
 }
 

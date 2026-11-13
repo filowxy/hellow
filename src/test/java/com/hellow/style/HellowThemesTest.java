@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 class HellowThemesTest {
 
     private static HellowTheme themeWithTitle(int argb) {
-        return HellowTheme.DEFAULT.withTitle(HellowColor.of(argb));
+        HellowColor color = () -> argb;
+        return HellowTheme.DEFAULT.withTitle(color);
     }
 
     @Test
